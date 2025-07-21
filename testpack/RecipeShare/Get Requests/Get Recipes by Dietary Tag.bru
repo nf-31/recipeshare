@@ -1,0 +1,15 @@
+meta {
+  name: Get Recipes by Dietary Tag
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/recipes/dietaryTag/?dietaryTag={{dietaryTag}}
+  body: none
+  auth: inherit
+}
+
+params:query {
+  dietaryTag: {{dietaryTag}}
+}

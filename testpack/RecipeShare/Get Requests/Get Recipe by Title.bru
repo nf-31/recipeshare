@@ -1,0 +1,15 @@
+meta {
+  name: Get Recipe by Title
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/recipes/title/?title={{title}}
+  body: none
+  auth: inherit
+}
+
+params:query {
+  title: {{title}}
+}
