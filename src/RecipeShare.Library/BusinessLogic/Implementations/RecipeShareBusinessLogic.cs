@@ -110,7 +110,7 @@ public class RecipeShareBusinessLogic : IRecipeShareBusinessLogic
         }
         catch (Exception e)
         {
-            _logger.LogError("Failed to add recipe with title {Title}", recipe.Title);
+            _logger.LogError("Failed to add recipe with title {Title}", recipe?.Title);
             throw;
         }
     }
@@ -151,7 +151,7 @@ public class RecipeShareBusinessLogic : IRecipeShareBusinessLogic
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to update recipe with Title {Title}", recipe.Title);
+            _logger.LogError(ex, "Failed to update recipe with Title {Title}", recipe?.Title);
             throw;
         }
         
