@@ -110,9 +110,51 @@ public class RecipeShareBusinessLogic : IRecipeShareBusinessLogic
         }
         catch (Exception e)
         {
-            _logger.LogWarning("Failed to add recipe with title {Title}", recipe.Title);
+            _logger.LogError("Failed to add recipe with title {Title}", recipe.Title);
             throw;
         }
+    }
+
+    public async Task UpdateRecipeById(int id, RecipeRequest recipe, CancellationToken cancellationToken)
+    {
+        try
+        {
+            if (id is < 0 or > int.MaxValue)
+            {
+                _logger.LogWarning("Invalid recipe ID: {Id}", id);
+                throw new ArgumentOutOfRangeException(nameof(id), "Invalid recipe ID");
+            }
+            
+            _logger.LogInformation("Updating recipe with ID {Id}", id);
+            await _recipeShareRepository.UpdateRecipeById(id, recipe, cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to update recipe with ID {Id}", id);
+            throw;
+        }
+        
+    }
+
+    public async Task UpdateRecipeByTitle(RecipeRequest recipe, CancellationToken cancellationToken)
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(recipe.Title))
+            {
+                _logger.LogWarning("Invalid recipe title");
+                throw new ArgumentNullException(nameof(recipe.Title), "Recipe title must be present");
+            }
+            
+            _logger.LogInformation("Updating recipe with title {Title}", recipe.Title);
+            await _recipeShareRepository.UpdateRecipeByTitle(recipe, cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to update recipe with Title {Title}", recipe.Title);
+            throw;
+        }
+        
     }
 
     #endregion

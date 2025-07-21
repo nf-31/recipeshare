@@ -30,4 +30,36 @@ public class ModifyRecipesController : ControllerBase
             return StatusCode(500, $"Internal server error: {ex.Message}");
         }
     }
+
+    [HttpPatch]
+    [Route("update/{id}")]
+    public async Task<IActionResult> UpdateRecipebyId([FromRoute] int id, [FromBody] RecipeRequest recipe, CancellationToken cancellationToken)
+    {
+        try
+        {
+            await _recipeShareBusinessLogic.UpdateRecipeById(id, recipe, cancellationToken);
+            
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
+    }
+    
+    [HttpPatch]
+    [Route("update/title")]
+    public async Task<IActionResult> UpdateRecipeByTitle([FromBody] RecipeRequest recipe, CancellationToken cancellationToken)
+    {
+        try
+        {
+            await _recipeShareBusinessLogic.UpdateRecipeByTitle(recipe, cancellationToken);
+            
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
+    }
 }

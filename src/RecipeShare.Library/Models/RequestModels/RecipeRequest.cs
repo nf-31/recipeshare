@@ -4,9 +4,9 @@ public class RecipeRequest
 {
     public string Title { get; set; }
     public int CookingTime { get; set; }
-    public List<AddIngredientRequest> Ingredients { get; set; } = new();
-    public List<AddStepRequest> Steps { get; set; } = new();
-    public List<string> DietaryTags { get; set; } = new();
+    public ICollection<AddIngredientRequest>? Ingredients { get; set; } = new List<AddIngredientRequest>();
+    public ICollection<AddStepRequest>? Steps { get; set; } = new List<AddStepRequest>();
+    public ICollection<string>? DietaryTags { get; set; } = new List<string>();
 }
 
 public class AddIngredientRequest

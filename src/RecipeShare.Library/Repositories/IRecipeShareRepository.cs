@@ -15,4 +15,8 @@ public interface IRecipeShareRepository
     Task<IEnumerable<RecipeResponse?>> GetRecipeByDietaryTag(string dietaryTag, CancellationToken cancellationToken);
 
     Task AddRecipe(RecipeRequest request, CancellationToken cancellationToken);
+    
+    Task UpdateRecipeById(int id, RecipeRequest request, CancellationToken cancellationToken);
+    
+    Task UpdateRecipeByTitle(RecipeRequest request, CancellationToken cancellationToken);
 }
