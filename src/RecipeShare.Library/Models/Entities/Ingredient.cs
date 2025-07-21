@@ -18,4 +18,6 @@ public class Ingredient
 
     public string Unit { get; set; }
     
+    public Recipe Recipe { get; set; }
+    
 }

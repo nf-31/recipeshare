@@ -25,11 +25,12 @@ builder.Host
 
 var startup = new Startup(builder.Configuration);
 
-startup.ConfigureServices(builder.Services, new SerilogLoggerFactory(Log.Logger).CreateLogger<Startup>());
+startup.ConfigureServices(builder.Services);
 
 var app = builder.Build();
 
-startup.Configure(app, app.Environment);
+startup.Configure(app, app.Environment, 
+    new SerilogLoggerFactory(Log.Logger).CreateLogger<Startup>());
 
 
 app.Run();

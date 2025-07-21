@@ -1,9 +1,0 @@
-CREATE TABLE DietaryTags
-(
-    ID   INT IDENTITY(1,1) PRIMARY KEY,
-    RID  INT NOT NULL,
-    Name NVARCHAR(100) NOT NULL,
-    CONSTRAINT FK_DietaryTags_Recipe FOREIGN KEY (RID) REFERENCES Recipe (ID)
-);
-
-CREATE INDEX IX_DietaryTags_RID ON DietaryTags (RID);

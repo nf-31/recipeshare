@@ -12,5 +12,7 @@ public class DietaryTag
     public int RId { get; set; }
 
     public string Name { get; set; }
+    public Recipe Recipe { get; set; }
+    
     
 }

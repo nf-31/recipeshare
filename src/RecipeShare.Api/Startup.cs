@@ -1,7 +1,9 @@
 using DbUp;
 using System.Reflection;
+using Microsoft.EntityFrameworkCore;
 using RecipeShare.Library.BusinessLogic;
 using RecipeShare.Library.BusinessLogic.Implementations;
+using RecipeShare.Library.EntityFramework;
 using RecipeShare.Library.Repositories;
 using RecipeShare.Library.Repositories.Implementations;
 
@@ -17,27 +19,34 @@ namespace RecipeShare
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
+            UpdateDatabase(app, logger);
+            
+            // Configure the HTTP request pipeline.
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-            
+
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
 
-        public void ConfigureServices(IServiceCollection services,  ILogger<Startup> logger)
+        public void ConfigureServices(IServiceCollection services)
         {
             // Add DbContext, repositories, and business logic
             ConfigureRepositories(services);
-            ConfigureBusinessLogic(services); 
-            ConfigureDatabase(services, logger);
+            ConfigureBusinessLogic(services);
+            services.AddDbContext<RecipeShareDbContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("Database"),
+                    b => b.MigrationsAssembly("RecipeShare.Library")
+                ));
 
             services.AddControllers();
             services.AddSwaggerGen();
@@ -52,25 +61,18 @@ namespace RecipeShare
         {
             services.AddScoped<IRecipeShareRepository, RecipeShareRepository>();
         }
+        
 
-        private void ConfigureDatabase(IServiceCollection services,  ILogger<Startup> logger)
+        private void UpdateDatabase(IApplicationBuilder app, ILogger<Startup> logger)
         {
-            // Run DbUp migrations
-            var connectionString = Configuration.GetConnectionString("Database");
-            var upgrader =
-                DeployChanges.To
-                    .SqlDatabase(connectionString)
-                    .WithScriptsEmbeddedInAssembly(Assembly.GetExecutingAssembly())
-                    .JournalToSqlTable("dbo", "SchemaVersions")
-                    .LogToConsole()
-                    .LogScriptOutput()
-                    .Build();
-
-            var result = upgrader.PerformUpgrade();
-            if (!result.Successful)
+            using (var serviceScope = app.ApplicationServices
+                       .GetRequiredService<IServiceScopeFactory>()
+                       .CreateScope())
             {
-                logger.LogError($"Failed to upgrade database using script: ${result.ErrorScript.Name} with error: {result.Error}");
-                throw result.Error;
+                using (var context = serviceScope.ServiceProvider.GetService<RecipeShareDbContext>())
+                {
+                    context.Database.Migrate();
+                }
             }
             
             logger.LogInformation($"Successfully upgraded database");
