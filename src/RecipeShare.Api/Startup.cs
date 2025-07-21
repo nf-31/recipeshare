@@ -1,5 +1,6 @@
 using DbUp;
 using System.Reflection;
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using RecipeShare.Library.BusinessLogic;
 using RecipeShare.Library.BusinessLogic.Implementations;
@@ -48,7 +49,11 @@ namespace RecipeShare
                     b => b.MigrationsAssembly("RecipeShare.Library")
                 ));
 
-            services.AddControllers();
+            services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                });
             services.AddSwaggerGen();
         }
 

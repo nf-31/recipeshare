@@ -13,5 +13,5 @@ public class Step
     public int StepNumber { get; set; }
 
     public string Text { get; set; }
-    public Recipe Recipe { get; set; }
+    public Recipe? Recipe { get; set; }
 }

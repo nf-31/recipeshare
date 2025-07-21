@@ -1,14 +1,15 @@
 using RecipeShare.Library.Models;
+using RecipeShare.Library.Models.ResponseModels;
 
 namespace RecipeShare.Library.BusinessLogic;
 
 public interface IRecipeShareBusinessLogic
 {
-    Task<Recipe> GetRecipeById(int id, CancellationToken cancellationToken);
+    Task<RecipeResponse?> GetRecipeById(int id, CancellationToken cancellationToken);
     
-    Task<Recipe> GetRecipeByTitle(string title, CancellationToken cancellationToken);
+    Task<RecipeResponse?> GetRecipeByTitle(string title, CancellationToken cancellationToken);
     
-    Task<IEnumerable<Recipe>> GetRecipes(CancellationToken cancellationToken);
+    Task<IEnumerable<RecipeResponse?>> GetRecipes(CancellationToken cancellationToken);
     
-    Task<IEnumerable<Recipe>> GetRecipesByDietaryTag(string dietaryTag, CancellationToken cancellationToken);
+    Task<IEnumerable<RecipeResponse?>> GetRecipesByDietaryTag(string dietaryTag, CancellationToken cancellationToken);
 }

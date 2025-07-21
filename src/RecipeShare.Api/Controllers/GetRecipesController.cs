@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using RecipeShare.Library.BusinessLogic;
+using RecipeShare.Library.Models.ResponseModels;
 
 namespace RecipeShare.Controllers;
 
