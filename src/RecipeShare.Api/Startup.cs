@@ -32,12 +32,12 @@ namespace RecipeShare
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
 
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services,  ILogger<Startup> logger)
         {
             // Add DbContext, repositories, and business logic
             ConfigureRepositories(services);
             ConfigureBusinessLogic(services); 
-            ConfigureDatabase(services);
+            ConfigureDatabase(services, logger);
 
             services.AddControllers();
             services.AddSwaggerGen();
@@ -53,7 +53,7 @@ namespace RecipeShare
             services.AddScoped<IRecipeShareRepository, RecipeShareRepository>();
         }
 
-        private void ConfigureDatabase(IServiceCollection services)
+        private void ConfigureDatabase(IServiceCollection services,  ILogger<Startup> logger)
         {
             // Run DbUp migrations
             var connectionString = Configuration.GetConnectionString("Database");
@@ -61,14 +61,19 @@ namespace RecipeShare
                 DeployChanges.To
                     .SqlDatabase(connectionString)
                     .WithScriptsEmbeddedInAssembly(Assembly.GetExecutingAssembly())
+                    .JournalToSqlTable("dbo", "SchemaVersions")
                     .LogToConsole()
+                    .LogScriptOutput()
                     .Build();
 
             var result = upgrader.PerformUpgrade();
             if (!result.Successful)
             {
-                throw new Exception("Database migration failed", result.Error);
+                logger.LogError($"Failed to upgrade database using script: ${result.ErrorScript.Name} with error: {result.Error}");
+                throw result.Error;
             }
+            
+            logger.LogInformation($"Successfully upgraded database");
         }
     }
 }

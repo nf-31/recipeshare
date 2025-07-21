@@ -1,0 +1,10 @@
+CREATE TABLE Steps
+(
+    ID         INT IDENTITY(1,1) PRIMARY KEY,
+    RID        INT NOT NULL,
+    StepNumber INT NOT NULL,
+    Text       NVARCHAR(MAX),
+    CONSTRAINT FK_Steps_Recipe FOREIGN KEY (RID) REFERENCES Recipe (ID)
+);
+
+CREATE INDEX IX_Steps_RID ON Steps (RID);
