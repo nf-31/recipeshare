@@ -1,0 +1,70 @@
+meta {
+  name: Add Recipe
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/recipes/add
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "title": "Creamy Mushroom Pasta",
+    "cookingTime": 30,
+    "ingredients": [
+      {
+        "name": "Pasta",
+        "quantity": 500,
+        "unit": "g"
+      },
+      {
+        "name": "Mushrooms",
+        "quantity": 300,
+        "unit": "g"
+      },
+      {
+        "name": "Heavy Cream",
+        "quantity": 200,
+        "unit": "ml"
+      },
+      {
+        "name": "Garlic",
+        "quantity": 3,
+        "unit": "cloves"
+      },
+      {
+        "name": "Parmesan Cheese",
+        "quantity": 50,
+        "unit": "g"
+      }
+    ],
+    "steps": [
+      {
+        "description": "Boil pasta according to package instructions",
+        "stepNumber": 1
+      },
+      {
+        "description": "Slice mushrooms and mince garlic",
+        "stepNumber": 2
+      },
+      {
+        "description": "Sauté mushrooms and garlic until golden",
+        "stepNumber": 3
+      },
+      {
+        "description": "Add cream and simmer for 5 minutes",
+        "stepNumber": 4
+      },
+      {
+        "description": "Combine with pasta and sprinkle with parmesan",
+        "stepNumber": 5
+      }
+    ],
+    "dietaryTags": [
+      "vegetarian"
+    ]
+  }
+}

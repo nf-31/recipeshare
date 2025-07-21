@@ -1,4 +1,5 @@
 using RecipeShare.Library.Models;
+using RecipeShare.Library.Models.RequestModels;
 using RecipeShare.Library.Models.ResponseModels;
 
 namespace RecipeShare.Library.BusinessLogic;
@@ -12,4 +13,6 @@ public interface IRecipeShareBusinessLogic
     Task<IEnumerable<RecipeResponse?>> GetRecipes(CancellationToken cancellationToken);
     
     Task<IEnumerable<RecipeResponse?>> GetRecipesByDietaryTag(string dietaryTag, CancellationToken cancellationToken);
+
+    Task AddRecipe(RecipeRequest recipe, CancellationToken cancellationToken);
 }
