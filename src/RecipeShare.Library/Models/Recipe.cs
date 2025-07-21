@@ -13,9 +13,9 @@ public class Recipe
 
     public int CookingTime { get; set; }
 
-    public IEnumerable<Ingredient> Ingredients { get; set; } = new List<Ingredient>();
+    public ICollection<Ingredient> Ingredients { get; set; } = new List<Ingredient>();
     
-    public IEnumerable<Step> Steps { get; set; } = new List<Step>();
+    public ICollection<Step> Steps { get; set; } = new List<Step>();
     
-    public IEnumerable<DietaryTag> DietaryTags { get; set; } = new List<DietaryTag>();
+    public ICollection<DietaryTag> DietaryTags { get; set; } = new List<DietaryTag>();
 }

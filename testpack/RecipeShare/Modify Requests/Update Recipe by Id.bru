@@ -1,0 +1,53 @@
+meta {
+  name: Update Recipe by Id
+  type: http
+  seq: 2
+}
+
+patch {
+  url: {{baseUrl}}/api/recipes/update/{{id}}
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "title": "Updated Mushroom Pasta",
+    "cookingTime": 25,
+    "ingredients": [
+      {
+        "name": "Pasta",
+        "quantity": 400,
+        "unit": "g"
+      },
+      {
+        "name": "Mixed Mushrooms",
+        "quantity": 400,
+        "unit": "g"
+      },
+      {
+        "name": "White Wine",
+        "quantity": 100,
+        "unit": "ml"
+      }
+    ],
+    "steps": [
+      {
+        "description": "Cook pasta al dente",
+        "stepNumber": 1
+      },
+      {
+        "description": "Sauté mushrooms until golden",
+        "stepNumber": 2
+      },
+      {
+        "description": "Deglaze with wine and combine",
+        "stepNumber": 3
+      }
+    ],
+    "dietaryTags": [
+      "vegetarian",
+      "dairy-free"
+    ]
+  }
+}
