@@ -21,6 +21,7 @@ public class GetRecipesController : ControllerBase
     /// </summary>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
+    [AllowAnonymous]
     [HttpGet]
     public async Task<IActionResult> GetRecipes(CancellationToken cancellationToken)
     {

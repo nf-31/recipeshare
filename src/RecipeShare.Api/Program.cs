@@ -40,3 +40,9 @@ static void ConfigureGlobalLogger(IConfiguration configuration)
     Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(configuration).Enrich.FromLogContext()
         .WriteTo.Console(new ElasticsearchJsonFormatter()).CreateBootstrapLogger();
 }
+
+// Parital Program class to allow for benchmarking
+public partial class Program
+{
+    
+}
