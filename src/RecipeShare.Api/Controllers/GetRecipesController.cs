@@ -15,6 +15,11 @@ public class GetRecipesController : ControllerBase
         _recipeShareBusinessLogic = recipeShareBusinessLogic;
     }
     
+    /// <summary>
+    /// get all recipes.
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpGet]
     public async Task<IActionResult> GetRecipes(CancellationToken cancellationToken)
     {
@@ -29,6 +34,12 @@ public class GetRecipesController : ControllerBase
         }
     }
     
+    /// <summary>
+    /// Get recipe by ID.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpGet]
     [Route("{id:int}")]
     public async Task<IActionResult> GetRecipeById(int id, CancellationToken cancellationToken)
@@ -44,6 +55,12 @@ public class GetRecipesController : ControllerBase
         }
     }
     
+    /// <summary>
+    /// Get recipe by title.
+    /// </summary>
+    /// <param name="title"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpGet]
     [Route("title")]
     public async Task<IActionResult> GetRecipeByTitle([FromQuery] string title, CancellationToken cancellationToken)
@@ -59,6 +76,12 @@ public class GetRecipesController : ControllerBase
         }
     }
     
+    /// <summary>
+    /// Get recipes by dietary tag.
+    /// </summary>
+    /// <param name="dietaryTag"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpGet]
     [Route("dietaryTag")]
     public async Task<IActionResult> GetRecipesByDietaryTag([FromQuery] string dietaryTag, CancellationToken cancellationToken)

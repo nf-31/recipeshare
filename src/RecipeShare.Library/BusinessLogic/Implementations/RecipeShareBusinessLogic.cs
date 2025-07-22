@@ -24,7 +24,7 @@ public class RecipeShareBusinessLogic : IRecipeShareBusinessLogic
 
     public async Task<RecipeResponse?> GetRecipeById(int id, CancellationToken cancellationToken)
     {
-        if (id is < 0 or > int.MaxValue)
+        if (id is <= 0 or >= int.MaxValue)
         {
             _logger.LogWarning("Invalid recipe ID: {Id}", id);
             return null;
@@ -95,8 +95,6 @@ public class RecipeShareBusinessLogic : IRecipeShareBusinessLogic
 
     public async Task AddRecipe(RecipeRequest recipe, CancellationToken cancellationToken)
     {
-        try
-        {
             if (recipe is null)
             {
                 _logger.LogWarning("Invalid recipe");
@@ -107,19 +105,11 @@ public class RecipeShareBusinessLogic : IRecipeShareBusinessLogic
 
             await _recipeShareRepository.AddRecipe(recipe, cancellationToken);
             
-        }
-        catch (Exception e)
-        {
-            _logger.LogError("Failed to add recipe with title {Title}", recipe?.Title);
-            throw;
-        }
     }
 
     public async Task UpdateRecipeById(int id, RecipeRequest recipe, CancellationToken cancellationToken)
     {
-        try
-        {
-            if (id is < 0 or > int.MaxValue)
+            if (id is <= 0 or >= int.MaxValue)
             {
                 _logger.LogWarning("Invalid recipe ID: {Id}", id);
                 throw new ArgumentOutOfRangeException(nameof(id), "Invalid recipe ID");
@@ -127,19 +117,10 @@ public class RecipeShareBusinessLogic : IRecipeShareBusinessLogic
             
             _logger.LogInformation("Updating recipe with ID {Id}", id);
             await _recipeShareRepository.UpdateRecipeById(id, recipe, cancellationToken);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Failed to update recipe with ID {Id}", id);
-            throw;
-        }
-        
     }
 
     public async Task UpdateRecipeByTitle(RecipeRequest recipe, CancellationToken cancellationToken)
     {
-        try
-        {
             if (string.IsNullOrWhiteSpace(recipe.Title))
             {
                 _logger.LogWarning("Invalid recipe title");
@@ -148,14 +129,23 @@ public class RecipeShareBusinessLogic : IRecipeShareBusinessLogic
             
             _logger.LogInformation("Updating recipe with title {Title}", recipe.Title);
             await _recipeShareRepository.UpdateRecipeByTitle(recipe, cancellationToken);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Failed to update recipe with Title {Title}", recipe?.Title);
-            throw;
-        }
-        
     }
 
     #endregion
+    
+    #region Delete Recipes Business Logic
+
+    public async Task DeleteRecipe(int id, CancellationToken cancellationToken)
+    {
+        if (id is <= 0 or >= int.MaxValue)
+        {
+            _logger.LogWarning("Invalid recipe ID: {Id}", id);
+            throw new ArgumentOutOfRangeException(nameof(id), "Invalid recipe ID");
+        }
+        
+        _logger.LogInformation("Deleting recipe with ID {Id}", id);
+        
+        await _recipeShareRepository.DeleteRecipe(id, cancellationToken);
+    }
+    # endregion
 }

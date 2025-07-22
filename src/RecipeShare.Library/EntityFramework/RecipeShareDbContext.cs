@@ -19,19 +19,31 @@ public class RecipeShareDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Ingredient>()
-            .HasOne(i => i.Recipe)
+            .HasOne<Recipe>()
             .WithMany(r => r.Ingredients)
-            .HasForeignKey(i => i.RId);
+            .HasForeignKey(i => i.RId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Ingredient>()
+            .HasIndex(i => i.RId);
 
         modelBuilder.Entity<Step>()
-            .HasOne(s => s.Recipe)
+            .HasOne<Recipe>()
             .WithMany(r => r.Steps)
-            .HasForeignKey(s => s.RId);
+            .HasForeignKey(s => s.RId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Step>()
+            .HasIndex(s => s.RId);
 
         modelBuilder.Entity<DietaryTag>()
-            .HasOne(d => d.Recipe)
+            .HasOne<Recipe>()
             .WithMany(r => r.DietaryTags)
-            .HasForeignKey(d => d.RId);
+            .HasForeignKey(d => d.RId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<DietaryTag>()
+            .HasIndex(d => d.RId);
         
         
         // Add decimal precision configuration
