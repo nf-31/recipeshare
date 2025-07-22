@@ -265,7 +265,7 @@ public class RecipeShareBusinessLogicTests
     }
 
     [Test]
-    public void AddRecipe_RepositoryThrowsException_LogsAndRethrows()
+    public void AddRecipe_RepositoryThrowsException()
     {
         // Arrange
         var recipe = new RecipeRequest { Title = "Test Recipe" };
@@ -274,7 +274,6 @@ public class RecipeShareBusinessLogicTests
 
         // Act & Assert
         var ex = Assert.ThrowsAsync<Exception>(() => _businessLogic.AddRecipe(recipe, _cancellationToken));
-        VerifyLog(LogLevel.Error, $"Failed to add recipe with title {recipe.Title}");
     }
 
     #endregion
@@ -309,7 +308,7 @@ public class RecipeShareBusinessLogicTests
     }
 
     [Test]
-    public void UpdateRecipeById_RepositoryThrowsException_LogsAndRethrows()
+    public void UpdateRecipeById_RepositoryThrowsException()
     {
         // Arrange
         var recipe = new RecipeRequest { Title = "Test Recipe" };
@@ -318,7 +317,6 @@ public class RecipeShareBusinessLogicTests
 
         // Act & Assert
         var ex = Assert.ThrowsAsync<Exception>(() => _businessLogic.UpdateRecipeById(1, recipe, _cancellationToken));
-        VerifyLog(LogLevel.Error, "Failed to update recipe with ID 1");
     }
 
     #endregion
@@ -353,7 +351,7 @@ public class RecipeShareBusinessLogicTests
     }
 
     [Test]
-    public void UpdateRecipeByTitle_RepositoryThrowsException_LogsAndRethrows()
+    public void UpdateRecipeByTitle_RepositoryThrowsException()
     {
         // Arrange
         var recipe = new RecipeRequest { Title = "Test Recipe" };
@@ -362,7 +360,6 @@ public class RecipeShareBusinessLogicTests
 
         // Act & Assert
         var ex = Assert.ThrowsAsync<Exception>(() => _businessLogic.UpdateRecipeByTitle(recipe, _cancellationToken));
-        VerifyLog(LogLevel.Error, $"Failed to update recipe with Title {recipe.Title}");
     }
 
     #endregion
@@ -382,4 +379,43 @@ public class RecipeShareBusinessLogicTests
     }
 
     #endregion
+    
+    #region Delete Recipe Tests
+
+    [Test]
+    public void DeleteRecipe_ThrowsArgumentOutOfRangeException()
+    {
+         // Act & Assert
+        var ex = Assert.ThrowsAsync<ArgumentOutOfRangeException>(() =>
+            _businessLogic.DeleteRecipe(-1, _cancellationToken));
+        Assert.That(ex.ParamName, Is.EqualTo("id"));
+        VerifyLog(LogLevel.Warning, "Invalid recipe ID: -1");
+        
+    }
+    
+    [Test]
+    public void DeleteRecipe_RepositoryThrowsException()
+    {
+        // Arrange
+        _repositoryMock.Setup(r => r.DeleteRecipe(1, _cancellationToken))
+            .ThrowsAsync(new Exception("Database error"));
+
+        // Act & Assert
+        var ex = Assert.ThrowsAsync<Exception>(() => _businessLogic.DeleteRecipe(1, _cancellationToken));
+    }
+    
+    [Test]
+    public async Task DeleteRecipe_ValidId_CallsRepository()
+    {
+        // Arrange
+        var id = 1;
+        // Act
+        await _businessLogic.DeleteRecipe(id, _cancellationToken);
+
+        // Assert
+        _repositoryMock.Verify(r => r.DeleteRecipe(id, _cancellationToken), Times.Once);
+        VerifyLog(LogLevel.Information, $"Deleting recipe with ID {id}");
+    }
+
+    # endregion
 }

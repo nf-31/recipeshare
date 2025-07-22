@@ -11,7 +11,7 @@ using RecipeShare.Library.EntityFramework;
 namespace RecipeShare.Library.EntityFramework.Migrations
 {
     [DbContext(typeof(RecipeShareDbContext))]
-    [Migration("20250721175104_Initial")]
+    [Migration("20250722185101_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -39,9 +39,14 @@ namespace RecipeShare.Library.EntityFramework.Migrations
                     b.Property<int>("RId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("RecipeId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("RId");
+
+                    b.HasIndex("RecipeId");
 
                     b.ToTable("DietaryTags");
                 });
@@ -65,6 +70,9 @@ namespace RecipeShare.Library.EntityFramework.Migrations
                     b.Property<int>("RId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("RecipeId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Unit")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -72,6 +80,8 @@ namespace RecipeShare.Library.EntityFramework.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("RId");
+
+                    b.HasIndex("RecipeId");
 
                     b.ToTable("Ingredients");
                 });
@@ -87,6 +97,9 @@ namespace RecipeShare.Library.EntityFramework.Migrations
                     b.Property<int>("RId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("RecipeId")
+                        .HasColumnType("int");
+
                     b.Property<int>("StepNumber")
                         .HasColumnType("int");
 
@@ -97,6 +110,8 @@ namespace RecipeShare.Library.EntityFramework.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("RId");
+
+                    b.HasIndex("RecipeId");
 
                     b.ToTable("Steps");
                 });
@@ -123,33 +138,45 @@ namespace RecipeShare.Library.EntityFramework.Migrations
 
             modelBuilder.Entity("RecipeShare.Library.Models.Entities.DietaryTag", b =>
                 {
-                    b.HasOne("RecipeShare.Library.Models.Recipe", "Recipe")
+                    b.HasOne("RecipeShare.Library.Models.Recipe", null)
                         .WithMany("DietaryTags")
                         .HasForeignKey("RId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("RecipeShare.Library.Models.Recipe", "Recipe")
+                        .WithMany()
+                        .HasForeignKey("RecipeId");
 
                     b.Navigation("Recipe");
                 });
 
             modelBuilder.Entity("RecipeShare.Library.Models.Entities.Ingredient", b =>
                 {
-                    b.HasOne("RecipeShare.Library.Models.Recipe", "Recipe")
+                    b.HasOne("RecipeShare.Library.Models.Recipe", null)
                         .WithMany("Ingredients")
                         .HasForeignKey("RId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("RecipeShare.Library.Models.Recipe", "Recipe")
+                        .WithMany()
+                        .HasForeignKey("RecipeId");
 
                     b.Navigation("Recipe");
                 });
 
             modelBuilder.Entity("RecipeShare.Library.Models.Entities.Step", b =>
                 {
-                    b.HasOne("RecipeShare.Library.Models.Recipe", "Recipe")
+                    b.HasOne("RecipeShare.Library.Models.Recipe", null)
                         .WithMany("Steps")
                         .HasForeignKey("RId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("RecipeShare.Library.Models.Recipe", "Recipe")
+                        .WithMany()
+                        .HasForeignKey("RecipeId");
 
                     b.Navigation("Recipe");
                 });

@@ -19,4 +19,6 @@ public interface IRecipeShareBusinessLogic
     Task UpdateRecipeById(int id, RecipeRequest recipe, CancellationToken cancellationToken);
     
     Task UpdateRecipeByTitle(RecipeRequest recipe, CancellationToken cancellationToken);
+
+    Task DeleteRecipe(int id, CancellationToken cancellationToken);
 }

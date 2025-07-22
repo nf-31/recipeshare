@@ -15,6 +15,12 @@ public class ModifyRecipesController : ControllerBase
         _recipeShareBusinessLogic = recipeShareBusinessLogic;
     }
     
+    /// <summary>
+    /// Add a new recipe.
+    /// </summary>
+    /// <param name="recipe"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpPost]
     [Route("add")]
     public async Task<IActionResult> AddRecipe([FromBody] RecipeRequest recipe, CancellationToken cancellationToken)
@@ -31,6 +37,13 @@ public class ModifyRecipesController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Update a recipe by ID.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="recipe"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpPatch]
     [Route("update/{id}")]
     public async Task<IActionResult> UpdateRecipebyId([FromRoute] int id, [FromBody] RecipeRequest recipe, CancellationToken cancellationToken)
@@ -47,6 +60,12 @@ public class ModifyRecipesController : ControllerBase
         }
     }
     
+    /// <summary>
+    /// Update a recipe by title.
+    /// </summary>
+    /// <param name="recipe"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpPatch]
     [Route("update/title")]
     public async Task<IActionResult> UpdateRecipeByTitle([FromBody] RecipeRequest recipe, CancellationToken cancellationToken)

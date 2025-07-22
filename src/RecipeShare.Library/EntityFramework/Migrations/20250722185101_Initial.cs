@@ -31,7 +31,8 @@ namespace RecipeShare.Library.EntityFramework.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RId = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RecipeId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -42,6 +43,11 @@ namespace RecipeShare.Library.EntityFramework.Migrations
                         principalTable: "Recipes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DietaryTags_Recipes_RecipeId",
+                        column: x => x.RecipeId,
+                        principalTable: "Recipes",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -53,7 +59,8 @@ namespace RecipeShare.Library.EntityFramework.Migrations
                     RId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Quantity = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    Unit = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Unit = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RecipeId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -64,6 +71,11 @@ namespace RecipeShare.Library.EntityFramework.Migrations
                         principalTable: "Recipes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Ingredients_Recipes_RecipeId",
+                        column: x => x.RecipeId,
+                        principalTable: "Recipes",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -74,7 +86,8 @@ namespace RecipeShare.Library.EntityFramework.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RId = table.Column<int>(type: "int", nullable: false),
                     StepNumber = table.Column<int>(type: "int", nullable: false),
-                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RecipeId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -85,7 +98,17 @@ namespace RecipeShare.Library.EntityFramework.Migrations
                         principalTable: "Recipes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Steps_Recipes_RecipeId",
+                        column: x => x.RecipeId,
+                        principalTable: "Recipes",
+                        principalColumn: "Id");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DietaryTags_RecipeId",
+                table: "DietaryTags",
+                column: "RecipeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DietaryTags_RId",
@@ -93,9 +116,19 @@ namespace RecipeShare.Library.EntityFramework.Migrations
                 column: "RId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Ingredients_RecipeId",
+                table: "Ingredients",
+                column: "RecipeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Ingredients_RId",
                 table: "Ingredients",
                 column: "RId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Steps_RecipeId",
+                table: "Steps",
+                column: "RecipeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Steps_RId",
