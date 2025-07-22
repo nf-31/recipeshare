@@ -1,0 +1,52 @@
+meta {
+  name: Update Recipe by Title
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{baseUrl}}/api/recipes/update/title
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "title": "Creamy Mushroom Pasta",
+    "cookingTime": 35,
+    "ingredients": [
+      {
+        "name": "Fettuccine",
+        "quantity": 500,
+        "unit": "g"
+      },
+      {
+        "name": "Portobello Mushrooms",
+        "quantity": 350,
+        "unit": "g"
+      },
+      {
+        "name": "Cream",
+        "quantity": 250,
+        "unit": "ml"
+      }
+    ],
+    "steps": [
+      {
+        "description": "Boil pasta in salted water",
+        "stepNumber": 1
+      },
+      {
+        "description": "Pan fry mushrooms until brown",
+        "stepNumber": 2
+      },
+      {
+        "description": "Add cream and reduce sauce",
+        "stepNumber": 3
+      }
+    ],
+    "dietaryTags": [
+      "vegetarian"
+    ]
+  }
+}

@@ -1,25 +1,48 @@
+using RecipeShare;
+using Serilog;
+using Serilog.Extensions.Logging;
+using Serilog.Formatting.Elasticsearch;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Host
+    .ConfigureAppConfiguration((_, configurationBuilder) =>
+    {
+        var configuration = configurationBuilder.Build();
+        ConfigureGlobalLogger(configuration);
+    })
+    .ConfigureLogging((_, logging) =>
+    {
+        logging.ClearProviders()
+            .SetMinimumLevel(LogLevel.Debug);
+    })
+    .UseSerilog((context, configuration) =>
+    {
+        configuration.ReadFrom.Configuration(context.Configuration)
+            .Enrich.FromLogContext()
+            .WriteTo.Console(new ElasticsearchJsonFormatter());
+    });
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+var startup = new Startup(builder.Configuration);
+
+startup.ConfigureServices(builder.Services);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+startup.Configure(app, app.Environment, 
+    new SerilogLoggerFactory(Log.Logger).CreateLogger<Startup>());
 
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
 
 app.Run();
+
+static void ConfigureGlobalLogger(IConfiguration configuration)
+{
+    Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(configuration).Enrich.FromLogContext()
+        .WriteTo.Console(new ElasticsearchJsonFormatter()).CreateBootstrapLogger();
+}
+
+// Parital Program class to allow for benchmarking
+public partial class Program
+{
+    
+}

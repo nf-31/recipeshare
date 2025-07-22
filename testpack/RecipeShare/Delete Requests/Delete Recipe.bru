@@ -1,0 +1,11 @@
+meta {
+  name: Delete Recipe
+  type: http
+  seq: 1
+}
+
+delete {
+  url: {{baseUrl}}/api/recipes/delete/{{id}}
+  body: none
+  auth: inherit
+}
