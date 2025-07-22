@@ -1,0 +1,32 @@
+meta {
+  name: Fetch Token
+  type: http
+  seq: 4
+}
+
+post {
+  url: https://{{auth0_domain}}/oauth/token
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "client_id": "{{auth0_client_id}}",
+    "client_secret": "{{auth0_client_secret}}",
+    "audience": "{{auth0_audience}}",
+    "grant_type": "client_credentials"
+  }
+}
+
+script:post-response {
+  
+    let token = res.body.access_token
+    bru.setEnvVar("access_token", token);
+  
+  
+}
+
+settings {
+  encodeUrl: true
+}

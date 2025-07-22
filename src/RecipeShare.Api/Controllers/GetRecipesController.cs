@@ -1,11 +1,12 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RecipeShare.Library.BusinessLogic;
-using RecipeShare.Library.Models.ResponseModels;
 
 namespace RecipeShare.Controllers;
 
 [ApiController]
 [Route("api/recipes")]
+[Authorize]
 public class GetRecipesController : ControllerBase
 {
     private readonly IRecipeShareBusinessLogic _recipeShareBusinessLogic;
