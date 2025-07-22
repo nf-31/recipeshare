@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RecipeShare.Library.BusinessLogic;
 
@@ -5,6 +6,7 @@ namespace RecipeShare.Controllers;
 
 [ApiController]
 [Route("api/recipes")]
+[Authorize]
 public class DeleteRecipesController : ControllerBase
 {
     private readonly IRecipeShareBusinessLogic _recipeShareBusinessLogic;

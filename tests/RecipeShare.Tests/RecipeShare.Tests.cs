@@ -263,6 +263,52 @@ public class RecipeShareBusinessLogicTests
         Assert.That(ex.ParamName, Is.EqualTo("recipe"));
         VerifyLog(LogLevel.Warning, "Invalid recipe");
     }
+    
+    [Test]
+    [TestCase(0)]
+    [TestCase(-1)]
+    public void AddRecipe_InvalidCookingTime_ThrowsException(int cookingTime)
+    {
+        // Arrange
+        
+        var recipe = new RecipeRequest
+        {
+            Title = "Test Recipe",
+            CookingTime = cookingTime,
+            Ingredients = new List<AddIngredientRequest>
+            {
+                new() { Name = "Ingredient 1", Quantity = 1, Unit = "pc" }
+            }
+        };
+        
+        // Act & Assert
+        var ex = Assert.ThrowsAsync<Exception>(() => _businessLogic.AddRecipe(recipe, _cancellationToken));
+        Assert.That(ex.Message, Is.EqualTo("Recipe cooking time must be greater than zero"));
+        VerifyLog(LogLevel.Warning, "Invalid cooking time");
+    }
+    
+    [Test]
+    [TestCase(null)]
+    [TestCase("")]
+    [TestCase(" ")]
+    public void AddRecipe_InvalidTitle_ThrowsException(string? title)
+    {
+        // Arrange
+        var recipe = new RecipeRequest
+        {
+            Title = title,
+            CookingTime = 30,
+            Ingredients = new List<AddIngredientRequest>
+            {
+                new() { Name = "Ingredient 1", Quantity = 1, Unit = "pc" }
+            }
+        };
+        
+        // Act & Assert
+        var ex = Assert.ThrowsAsync<Exception>(() => _businessLogic.AddRecipe(recipe, _cancellationToken));
+        Assert.That(ex.Message, Is.EqualTo("Recipe title is required"));
+        VerifyLog(LogLevel.Warning, "Invalid recipe title");
+    }
 
     [Test]
     public void AddRecipe_RepositoryThrowsException()

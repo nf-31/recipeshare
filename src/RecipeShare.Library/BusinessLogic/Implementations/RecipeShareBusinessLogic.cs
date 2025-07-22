@@ -1,5 +1,4 @@
 using Microsoft.Extensions.Logging;
-using RecipeShare.Library.Models;
 using RecipeShare.Library.Models.RequestModels;
 using RecipeShare.Library.Models.ResponseModels;
 using RecipeShare.Library.Repositories;
@@ -101,6 +100,18 @@ public class RecipeShareBusinessLogic : IRecipeShareBusinessLogic
                 throw new ArgumentNullException(nameof(recipe), "Recipe cannot be null");
             }
 
+            if (recipe.CookingTime <= 0)
+            {
+                _logger.LogWarning("Invalid cooking time");
+                throw new Exception("Recipe cooking time must be greater than zero");
+            }
+
+            if (string.IsNullOrWhiteSpace(recipe.Title))
+            {
+                _logger.LogWarning("Invalid recipe title");
+                throw new Exception("Recipe title is required");
+            }
+
             _logger.LogInformation("Adding new recipe with title {Title}", recipe.Title);
 
             await _recipeShareRepository.AddRecipe(recipe, cancellationToken);
@@ -126,6 +137,8 @@ public class RecipeShareBusinessLogic : IRecipeShareBusinessLogic
                 _logger.LogWarning("Invalid recipe title");
                 throw new ArgumentNullException(nameof(recipe.Title), "Recipe title must be present");
             }
+            
+            
             
             _logger.LogInformation("Updating recipe with title {Title}", recipe.Title);
             await _recipeShareRepository.UpdateRecipeByTitle(recipe, cancellationToken);

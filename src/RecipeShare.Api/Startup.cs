@@ -34,6 +34,7 @@ namespace RecipeShare
 
             app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
@@ -55,6 +56,15 @@ namespace RecipeShare
                     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
                 });
             services.AddSwaggerGen();
+            services.AddAuthentication("Bearer")
+                .AddJwtBearer("Bearer", options =>
+                {
+                    options.Authority = Configuration["Auth0:Domain"];
+                    options.Audience = Configuration["Auth0:Audience"];
+                    
+                    if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development") 
+                        options.RequireHttpsMetadata = false;
+                });
         }
 
         private void ConfigureBusinessLogic(IServiceCollection services)
