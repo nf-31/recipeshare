@@ -13,3 +13,5 @@ The following assumptions were made for the database design:
 - A recipe can contain many ingredients. These ingredients usually have a name, a quantity, and a unit of measurement. Each ingredient for a recipe would require its own row, which should allow for modification (i.e. update or delete) at a later stage.
 - A recipe can also contain many steps. These steps are usually sequential, hence have a number associated with them. Therefore, each step would also require its own row, to allow for modification at a later stage.
 - Filtering would be done at code level, and not database level. However, since multiple recipes may have the same property such as a dietary tag or ingredient, the indexes would need to be carefully chosen to allow for performant querying of the database.
+
+Based on the above assumptions, the database was normalised (3NF). Together with the ID (by default), the foreign key (RID) was also chosen as an index to improve performance (such as for the underlying JOIN, DELETE and UPDATE operations).
