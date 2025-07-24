@@ -197,7 +197,7 @@ public class RecipeShareRepository : IRecipeShareRepository
             var titleExists = await _context.Recipes
                 .AsNoTracking()
                 .AnyAsync(r => r.Title == request.Title && r.Id != id, cancellationToken);
-
+            
             if (titleExists)
                 throw new InvalidOperationException($"Recipe with title '{request.Title}' already exists");
 

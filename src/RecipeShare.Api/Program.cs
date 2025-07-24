@@ -41,7 +41,7 @@ static void ConfigureGlobalLogger(IConfiguration configuration)
         .WriteTo.Console(new ElasticsearchJsonFormatter()).CreateBootstrapLogger();
 }
 
-// Parital Program class to allow for benchmarking
+// Partial Program class to allow for benchmarking
 public partial class Program
 {
     
