@@ -13,7 +13,7 @@ This repository contains the source code for the RecipeShare challenge.
 - Bruno API client
 
 ### Instructions
-To successfully run the project, a connection string toa SQL Server database must be added to the environment variables/appsettings. On first run, the relevant migrations will run and the database will be seeded with mock data. The API can then be tested using the Bruno collection provided.
+To successfully run the project, a connection string to a SQL Server database must be added to the environment variables/appsettings. On first run, the relevant migrations will run and the database will be seeded with mock data. The API can then be tested using the Bruno collection provided.
 
 Note: A client secret will be required to fetch a token from Auth0. The 'Fetch Token' request must be run before other requests can be run.
 
@@ -33,6 +33,10 @@ Based on the requirements provided in the specification, the following assumptio
 
 Please refer to [ARCHITECTURE.md](ARCHITECTURE.md) for all architecture, design decisions, notes, etc.
 
+
+## Demo Video
+
+The demo video can be found [here.](https://www.loom.com/share/4443b3843df94e88873caef8045259a1?sid=06ec61b6-1626-4397-945b-2092d216f74b)
 ## Benchmark Testing
 
 Using BenchmarkDotNet, 500 sequential calls to `GET /api/recipes` in Release mode were run. The results are presented below. Some extra tests were included to provide a comparison.

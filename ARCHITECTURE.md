@@ -39,9 +39,6 @@ In choosing the functionality to surface to a client, it was decided that the fo
 
 `DELETE /api/recipes/{id}` - Delete recipe by ID <br>
 
-The above endpoints were chosen based on the envisioned interaction of a client with the API. Rather than create a generic endpoint that accepted any filter, the the endpoints were designed to cater for specific filters, thus ensuring separation of concerns and easier maintainability of the codebase.
-
-
 
 ## API Structure
 
@@ -52,3 +49,5 @@ With SOLID in mind, it was decided to use a controller-based API. A quick look a
 ## Tradeoffs
 - Using EntityFramework vs Raw SQL
     - The use of an ORM vs raw SQL  could mean that as queries increase in complexity, the ability to debug easily lessens. However, in using an ORM, SQL injection, manually creating the database schema and defining relationships, as well as writing complex SQL scripts are avoided.
+- Granular vs generic filtering for endpoints
+    - The endpoints were chosen based on the envisioned interaction of a client with the API. Rather than create a generic endpoint that accepted any filter, the the endpoints were designed to cater for specific filters, thus ensuring separation of concerns and easier maintainability of the codebase.
